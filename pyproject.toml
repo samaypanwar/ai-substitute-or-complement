@@ -1,0 +1,24 @@
+[project]
+name = "aiprod"
+version = "0.1.0"
+description = "AI substitute vs complement: macro-release trading strategy (46-975 final project)"
+authors = [
+    {name = "Samay Panwar",email = "samaybhuvi@gmail.com"}
+]
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "pandas (>=3.1.1,<4.0.0)",
+    "numpy (>=2.5.4,<3.0.0)",
+    "statsmodels (>=0.15.0,<0.16.0)",
+    "openpyxl (>=3.1.5,<4.0.0)",
+    "requests (>=2.34.2,<3.0.0)",
+    "matplotlib (>=3.11.2,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{include = "aiprod", from = "src"}]
