@@ -79,27 +79,55 @@ The prior is only as good as the analogy. Each difference below predicts *which*
 
 ## 5. Open items
 1. Exposure index (AIOE vs Eloundou et al.) and the occupation→industry mapping (OEWS).
-2. Hours and supervisory share for *detailed* CES industries. FRED lacks some, so try BLS directly.
-3. Map detailed industries to returns (Ken French 49 industries? ETFs?). This decides the tradable N.
+2. Hours and supervisory share for *detailed* CES industries. FRED lacks them, and BLS flat files refuse requests without a contact email in the user agent.
+3. ~~Map industries to returns.~~ Done: Ken French 49 industries → 16 QWI sectors.
 4. ~~Historical prior episode.~~ **Decided 2026-11-10: the 1995–2004 IT boom.** See §3(d).
 5. Indeed postings: coverage by occupation, history length.
 
-## 6. Status: first results (pipeline v0, 2026-11-10)
-Code: `src/aiprod/`; run `poetry run python -m aiprod.run`.
+## 6. Status: results (pipeline v1, 2026-11-10)
+Run `poetry run python -m aiprod.run`. Tables are in `output/tables/`, figures in `output/figures/`, and `notebooks/01_explore.ipynb` is the interactive companion.
 
-| | IT boom (exposure = 1995 IT capital share) | AI era (exposure = LM AI exposure) |
-|---|---|---|
-| | IT boom | AI era |
-|---|---|---|
-| C1: extra productivity growth per 1 SD exposure (official all-employee hours from 2006) | +0.81 pp/yr (se 0.56) | −0.16 pp/yr (se 0.88) |
-| C2: junior-vs-prime employment gap per 1 SD | +0.032 (se 0.016) | −0.049 (se 0.030) |
-| C2, controlling for sector employment (juniors *given* sector size) | +0.028 (se 0.017) | −0.071 (se 0.024) |
+Coefficients are per 1 SD of exposure. p-values come from a wild cluster bootstrap (Webb weights, 1,999 reps); clusters are 13 sectors (C1, C3) and 19 sectors (C2).
 
-- **C1: no AI-era productivity gradient.** The earlier "white-collar acceleration" table used nonsupervisory-only hours and no time effects; it does not survive.
-- **C2: AI-era juniors lose ground in exposed sectors, and more so given sector size.** The IT era leans the other way. This is a sign flip that is **not yet separable** from the dot-com hiring boom (IT) or from the 2020–22 shocks (AI): the AI-era decline starts in 2020–21, before ChatGPT, with no visible acceleration after Nov 2022.
-- 1995 IT share and AI exposure are correlated (0.63 across sectors), so "exposed" means roughly the same white-collar sectors in both eras.
-- With 13–19 industries, a wild cluster bootstrap is needed before quoting significance.
-- **Not built yet:** C3 (labor share, unit labor cost), C4 (returns, rate beta, backtest), detailed-industry panel, nowcast proxies, Bayesian combination.
+| Claim | IT boom (1995 IT capital share) | AI era (language-model AI exposure) |
+|---|---|---|
+| C1 productivity growth, pp/yr | +0.49 (p = 0.26) | −0.26 (p = 0.96) |
+| C2 junior employment gap, given sector size | +0.028 (p = 0.35) | **−0.071 (p = 0.01)** |
+| C3 labor share change, pp/yr | +0.01 (p = 0.99) | **−0.81 (p < 0.01)**; −0.61 to −0.85 leaving out any one sector |
+| C3 value-added price growth, pp/yr | −1.16 (p = 0.26) | +2.21 (p = 0.26) |
+
+**ChatGPT kink test** (COVID years dropped; exposed-sector junior gap):
+- no pre-trend (0.000 per year);
+- a post-COVID level drop of −0.056 (p < 0.01);
+- an *extra* post-ChatGPT slope of **−0.012 per year (p = 0.01)**.
+
+Total employment across 91 detailed CES industries shows none of these: no pre-trend, no level shift, no kink.
+
+Caveat: an earlier specification fitted a straight line through 2020–22 and found no kink. The V-shaped COVID crash and recovery in exposed sectors drives the difference, so the paper reports both.
+
+**Nowcast.** Monthly CES employment, the supervisory share and youth unemployment predict the QWI junior gap out of sample (2023–25): R² 0.53, correlation 0.77. The nowcast says the gap kept widening through 2026.
+
+**C4, the pricing test (1996–2026, monthly, 16 sectors mapped to Ken French industries):**
+- Long substituting / short complementing: Sharpe −0.19; FF5 + momentum + Δ2y alpha −1.6% a year (t −1.0).
+- After ChatGPT the strategy loads on 2-year yield changes (t 2.6).
+- The Bayesian overlay leans negative for most of the period after 2000, but earns nothing.
+- The static long-AI-exposure benchmark is also negative.
+- Reading: a defended negative result. The market either already prices the junior-substitution signal, or sector-level returns are dominated by rate exposure.
+
+**Bayesian pooling (IT prior → AI posterior).**
+- C3: the posterior is −0.70 even at $\tau=0$, because the AI data are much more precise than the prior.
+- C2: the sign depends on $\tau$. P(negative) is 0.62 at $\tau=0$ and 0.95 once $\tau$ reaches the AI standard error.
+- C1: uninformative.
+
+**Overall reading.** AI-exposed sectors show substitution at the *entry margin*: fewer juniors, a falling labor share, no fewer jobs overall. There is no measurable productivity acceleration, so the gain shows up as margins rather than measured output (D4). We find no evidence that sector equity returns trade on it.
+
+**Not built yet:**
+- unit labor cost as a separate series;
+- event windows around BEA/QWI release days (daily returns are cached);
+- JOLTS in the nowcast;
+- an employment-weighted exposure index;
+- a C4 signal from labor share;
+- turnover reduction (smoother signal).
 
 ## 7. Dates
 - Group form: Nov 13.

@@ -5,6 +5,7 @@ pandas object. Delete a cached file to force a fresh download.
 """
 
 import gzip
+import zipfile
 from pathlib import Path
 
 import openpyxl
@@ -20,6 +21,7 @@ LM_AIIE = (
     "https://raw.githubusercontent.com/AIOE-Data/AIOE/main/"
     "Language%20Modeling%20AIOE%20and%20AIIE.xlsx"
 )
+KEN_FRENCH = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/{}.zip"
 QWI_NATIONAL = (
     "https://lehd.ces.census.gov/data/qwi/latest_release/us/qwi_us_sa_f_gn_ns_op_u.csv.gz"
 )
@@ -60,6 +62,33 @@ def fred(series_id: str) -> pd.Series:
     return series.rename(series_id)
 
 
+def fred_if_available(series_id: str) -> pd.Series | None:
+    """Like ``fred`` but returns ``None`` when FRED does not carry the series.
+
+    Used only for probing candidate IDs (detailed CES industries). A missing
+    series is remembered with an empty marker file so it is not re-requested.
+
+    Args:
+        series_id (str): Candidate FRED series ID.
+
+    Returns:
+        pd.Series | None: The series, or ``None`` if FRED has no such ID.
+    """
+    marker = RAW / "fred" / f"{series_id}.missing"
+    if marker.exists():
+        return None
+
+    if (RAW / "fred" / f"{series_id}.csv").exists():
+        return fred(series_id)
+
+    # FRED answers unknown IDs with 404.
+    if requests.head(FRED_CSV.format(series_id), timeout=60).status_code == 404:
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.touch()
+        return None
+    return fred(series_id)
+
+
 def bea_value_added(table: str) -> pd.DataFrame:
     """Read one sheet of BEA's GDP-by-industry ``ValueAdded.xlsx`` workbook.
 
@@ -75,16 +104,20 @@ def bea_value_added(table: str) -> pd.DataFrame:
     sheet = openpyxl.load_workbook(path, read_only=True)[table]
     rows = list(sheet.iter_rows(values_only=True))
     header_at = next(i for i, row in enumerate(rows) if row[0] == "Line")
-    periods = [str(p) for p in rows[header_at][2:] if p is not None]
+    header = rows[header_at]
+
+    # A blank spacer column separates the labels from the first period, so
+    # read each period from its own column index rather than by position.
+    period_columns = {i: str(label) for i, label in enumerate(header) if i >= 2 and label is not None}
 
     # Data rows have an integer line number in the first column; footnotes do not.
     records = []
     for row in rows[header_at + 1:]:
         if row[0] is None or not str(row[0]).isdigit():
             continue
-        values = [pd.to_numeric(v, errors="coerce") for v in row[2:2 + len(periods)]]
+        values = [pd.to_numeric(row[i], errors="coerce") for i in period_columns]
         records.append([int(row[0]), str(row[1]).strip(), *values])
-    return pd.DataFrame(records, columns=["line", "industry", *periods])
+    return pd.DataFrame(records, columns=["line", "industry", *period_columns.values()])
 
 
 def it_capital_stock(year: int) -> pd.DataFrame:
@@ -130,6 +163,39 @@ def language_model_exposure() -> pd.Series:
     path = download(LM_AIIE, RAW / "lm_aiie.xlsx")
     frame = pd.read_excel(path, sheet_name="LM AIIE", dtype={"NAICS": str})
     return frame.set_index("NAICS")["Language Modeling AIIE"].rename("lm_aiie")
+
+
+def ken_french(name: str) -> pd.DataFrame:
+    """First table of a Ken French daily data file, as decimal returns.
+
+    Args:
+        name (str): File stem on the Ken French site, e.g.
+            ``"49_Industry_Portfolios_daily_CSV"`` (the first table is
+            value-weighted returns) or ``"F-F_Research_Data_5_Factors_2x3_daily_CSV"``.
+
+    Returns:
+        pd.DataFrame: Daily returns in decimals, indexed by date; missing
+        values (-99.99 / -999) are NaN.
+    """
+    path = download(KEN_FRENCH.format(name), RAW / "french" / f"{name}.zip")
+    with zipfile.ZipFile(path) as archive:
+        lines = archive.read(archive.namelist()[0]).decode("latin-1").splitlines()
+
+    # The table starts at the first header line ("," then column names) and
+    # runs until the first line that does not begin with an 8-digit date.
+    start = next(i for i, line in enumerate(lines) if line.startswith(","))
+    columns = [c.strip() for c in lines[start].split(",")[1:]]
+    rows = []
+    for line in lines[start + 1:]:
+        first = line.split(",")[0].strip()
+        if not (len(first) == 8 and first.isdigit()):
+            break
+        rows.append([first, *line.split(",")[1:]])
+
+    frame = pd.DataFrame(rows, columns=["date", *columns])
+    frame["date"] = pd.to_datetime(frame["date"], format="%Y%m%d")
+    returns = frame.set_index("date").astype(float)
+    return returns.mask(returns <= -99.99) / 100
 
 
 def qwi_by_age() -> pd.DataFrame:

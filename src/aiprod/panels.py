@@ -122,6 +122,41 @@ def productivity_panel(frequency: str) -> pd.DataFrame:
     return pd.concat(panels, ignore_index=True)
 
 
+def incidence_panel() -> pd.DataFrame:
+    """Annual labor share and price growth by sector (claim C3).
+
+    In BEA table TVA113 each industry's value-added row is followed by its
+    three components: compensation of employees, taxes less subsidies, and
+    gross operating surplus. Labor share is compensation over value added.
+
+    If a productivity gain goes to shareholders, the labor share falls. If it
+    goes to consumers, the industry's price index falls instead.
+
+    Returns:
+        pd.DataFrame: Columns ``sector``, ``date``, ``labor_share`` (percent),
+        ``labor_share_change`` (percentage points per year) and
+        ``price_growth`` (100 x log change of the value-added price index).
+    """
+    components = sources.bea_value_added("TVA113-A")
+    prices = sources.bea_value_added("TVA104-A")
+
+    panels = []
+    for sector in SECTORS:
+        row = components.index[components["industry"] == sector.bea_line][0]
+        value_added = components.iloc[row, 2:].astype(float)
+        compensation = components.iloc[row + 1, 2:].astype(float)
+        price = prices[prices["industry"] == sector.bea_line].iloc[0, 2:].astype(float)
+
+        frame = pd.DataFrame({
+            "labor_share": 100 * compensation / value_added,
+            "price_growth": 100 * np.log(price).diff(),
+        })
+        frame["labor_share_change"] = frame["labor_share"].diff()
+        frame.index = pd.PeriodIndex(frame.index, freq="Y").to_timestamp()
+        panels.append(frame.assign(sector=sector.key).rename_axis("date").reset_index())
+    return pd.concat(panels, ignore_index=True)
+
+
 def naics2_exposures() -> pd.DataFrame:
     """AI and IT exposure for each QWI two-digit NAICS sector.
 

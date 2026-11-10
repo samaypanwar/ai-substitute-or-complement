@@ -25,11 +25,19 @@ All data are free and downloaded on first run into `data/` (FRED, BEA, Census LE
 
 ## Layout
 ```
-src/aiprod/   config.py   sample windows and industry crosswalk
-              sources.py  download-and-cache readers for every data source
-              panels.py   industry panels (productivity, exposure, junior gaps)
-              claims.py   estimators for each claim
-              run.py      pipeline entry point
-notebooks/    interactive exploration
-output/       tables and figures
+src/aiprod/   config.py     sample windows and industry crosswalk
+              sources.py    download-and-cache readers for every data source
+              panels.py     sector panels: productivity, labor share, exposure, junior gaps
+              nowcast.py    detailed CES industries and the monthly nowcast of the QWI junior gap
+              claims.py     difference-in-differences and event studies for C1-C3, both eras
+              inference.py  wild cluster bootstrap, ChatGPT kink test, Bayesian pooling
+              strategy.py   C4 backtest: rank weights, Bayesian sizing, factor regressions
+              figures.py    publication figure style (400-dpi PNG + vector PDF)
+              plots.py      one function per paper figure
+              run.py        pipeline entry point
+notebooks/    01_explore.ipynb: interactive companion (kernel "macro-46-975")
+output/       tables/ and figures/
 ```
+
+## Current results
+See [`design.md` §6](design.md). In short: AI-exposed sectors show fewer junior workers (with a post-ChatGPT kink) and a falling labor share, but no productivity acceleration and no change in total employment. A long-short strategy on the junior-substitution signal does not earn excess returns.
