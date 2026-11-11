@@ -1,8 +1,13 @@
-"""Publication-style figures (IEEE / ICML two-column conventions).
+"""Paper figures in the ICML / ICLR house style.
 
-Every figure is saved twice into ``output/figures``: a 400-dpi PNG for quick
-viewing and a vector PDF for the LaTeX paper. Widths follow the two-column
-conventions: one column is 3.5 in, the full text width 7.0 in.
+Conventions followed:
+    * Sizes match the paper's text width (6.5 in with 1-in margins), so figures
+      are included at 100% and their fonts match the body. ``HALF`` is for two
+      figures side by side.
+    * No titles inside figures: the LaTeX caption describes the figure, and
+      multi-panel figures carry "(a)", "(b)" panel labels.
+    * Times text at 9 pt, light grid on both axes, frameless legends.
+    * PNG only, 400 dpi, saved into ``output/figures``.
 
 Colors come from a colorblind-validated categorical palette and are assigned
 by *meaning*, never by plotting order: the AI era is always blue, the IT boom
@@ -14,8 +19,8 @@ import pandas as pd
 
 from aiprod.config import FIGURES
 
-COLUMN = 3.5
-FULL = 7.0
+FULL = 6.5
+HALF = 3.15
 
 AI_BLUE = "#2a78d6"
 IT_ORANGE = "#eb6834"
@@ -33,12 +38,12 @@ def apply_style() -> None:
         "font.family": "serif",
         "font.serif": ["STIX Two Text", "STIXGeneral", "Times New Roman", "DejaVu Serif"],
         "mathtext.fontset": "stix",
-        "font.size": 8,
-        "axes.titlesize": 8,
-        "axes.labelsize": 8,
-        "xtick.labelsize": 7,
-        "ytick.labelsize": 7,
-        "legend.fontsize": 7,
+        "font.size": 9,
+        "axes.titlesize": 9,
+        "axes.labelsize": 9,
+        "xtick.labelsize": 8,
+        "ytick.labelsize": 8,
+        "legend.fontsize": 8,
         "legend.frameon": False,
         "axes.spines.top": False,
         "axes.spines.right": False,
@@ -47,7 +52,6 @@ def apply_style() -> None:
         "xtick.color": MUTED,
         "ytick.color": MUTED,
         "axes.grid": True,
-        "axes.grid.axis": "y",
         "grid.color": GRID,
         "grid.linewidth": 0.5,
         "lines.linewidth": 1.4,
@@ -60,16 +64,20 @@ def apply_style() -> None:
 
 
 def save(fig: plt.Figure, name: str) -> None:
-    """Save ``fig`` as ``output/figures/<name>.png`` and ``.pdf``, then close it.
+    """Save ``fig`` as ``output/figures/<name>.png`` (400 dpi), then close it.
 
     Args:
         fig (plt.Figure): Figure to save.
-        name (str): File stem, e.g. ``"c2_event_study"``.
+        name (str): File stem, e.g. ``"fig02_c2_event_studies"``.
     """
     FIGURES.mkdir(parents=True, exist_ok=True)
     fig.savefig(FIGURES / f"{name}.png")
-    fig.savefig(FIGURES / f"{name}.pdf")
     plt.close(fig)
+
+
+def panel_label(ax: plt.Axes, label: str) -> None:
+    """Write a panel label such as "(a) IT boom" above the top-left corner of ``ax``."""
+    ax.set_title(label, loc="left", fontsize=9)
 
 
 def mark_event(ax: plt.Axes, x: float | pd.Timestamp, label: str) -> None:

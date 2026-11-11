@@ -8,7 +8,7 @@ from dataclasses import asdict
 
 import pandas as pd
 
-from aiprod import claims, inference, nowcast, panels, plots, strategy
+from aiprod import claims, inference, nowcast, panels, plots, strategy, tables
 from aiprod.config import PROCESSED, SECTORS, TABLES
 from aiprod.figures import apply_style
 
@@ -19,9 +19,9 @@ POOLED = {
     "C3": "labor_share_change",
 }
 POOLED_LABELS = {
-    "C1": "C1: productivity growth (pp/yr)",
-    "C2": "C2: junior employment gap",
-    "C3": "C3: labor share change (pp/yr)",
+    "C1": "(a) C1 productivity",
+    "C2": "(b) C2 junior gap",
+    "C3": "(c) C3 labor share",
 }
 
 
@@ -130,11 +130,15 @@ def main() -> None:
     plots.c2_event_studies(real["studies"])
     plots.coefficient_comparison(real["estimates"], {POOLED_LABELS[c]: o for c, o in POOLED.items()})
     plots.labor_share_by_exposure(real["incidence"], sector_exp["ai_exposure"])
-    plots.detailed_event_study(real["detailed_study"], real["detailed"]["naics"].nunique())
+    plots.detailed_event_study(real["detailed_study"])
     plots.nowcast_fit(nowcast_panel)
     plots.strategy_paths(priced["strategies"], priced["size"])
     plots.bayesian_pooling(posteriors, POOLED_LABELS)
     plots.exposure_overlap(sector_exp)
+
+    tables.did_table(real["estimates"])
+    tables.kink_table(real["kinks"])
+    tables.strategy_table(priced["results"])
 
     print(real["estimates"].round(3).to_string(index=False), "\n")
     print(real["kinks"].round(4).to_string(index=False), "\n")

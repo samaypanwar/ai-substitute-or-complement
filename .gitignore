@@ -11,3 +11,15 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# LaTeX build artefacts and the Overleaf upload bundle
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
+paper/main.pdf
+paper.zip

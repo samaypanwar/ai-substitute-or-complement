@@ -32,12 +32,21 @@ src/aiprod/   config.py     sample windows and industry crosswalk
               claims.py     difference-in-differences and event studies for C1-C3, both eras
               inference.py  wild cluster bootstrap, ChatGPT kink test, Bayesian pooling
               strategy.py   C4 backtest: rank weights, Bayesian sizing, factor regressions
-              figures.py    publication figure style (400-dpi PNG + vector PDF)
+              figures.py    ICML/ICLR-style figure conventions (400-dpi PNG)
               plots.py      one function per paper figure
               run.py        pipeline entry point
 notebooks/    01_explore.ipynb: interactive companion (kernel "macro-46-975")
-output/       tables/ and figures/
+output/       tables/ (CSV and LaTeX) and figures/ (400-dpi PNG)
+paper/        the prospectus (12 pt, double spaced, 1-in margins); one file per section
+scripts/      sync_paper.sh copies figures and tables into paper/ and builds paper.zip
 ```
+
+## Paper and Overleaf
+```bash
+poetry run python -m aiprod.run      # refresh results
+bash scripts/sync_paper.sh           # copy figures/tables into paper/ and write paper.zip
+```
+Upload `paper.zip` in Overleaf (New Project > Upload Project); the main file is `main.tex`. Figures and tables are generated, so edit the pipeline rather than the copies in `paper/`.
 
 ## Current results
 See [`design.md` §6](design.md). In short: AI-exposed sectors show fewer junior workers (with a post-ChatGPT kink) and a falling labor share, but no productivity acceleration and no change in total employment. A long-short strategy on the junior-substitution signal does not earn excess returns.

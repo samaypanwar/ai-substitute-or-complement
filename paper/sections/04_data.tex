@@ -1,0 +1,52 @@
+\section{Data and Event Selection}
+\label{sec:data}
+
+All data are free and public. Table~\ref{tab:data} lists each source with its release frequency and publication lag; the code that downloads and transforms them is public (Appendix~\ref{app:code}).
+
+\begin{table}[t]
+\caption{Data sources. ``Lag'' is the approximate time between the end of the reference period and publication.}
+\label{tab:data}
+\begin{singlespace}\small\centering
+\begin{tabular}{p{0.27\linewidth}p{0.33\linewidth}p{0.13\linewidth}p{0.15\linewidth}}
+\toprule
+Object & Source (release) & Frequency & Coverage, lag \\
+\midrule
+Real value added, compensation, prices by industry & BEA GDP by Industry & A (Q) & 1997 (2005)--2026Q2; $\sim$3 months \\
+Employment, hours, supervisory share & BLS Employment Situation (CES), via FRED & M & 1964--Oct 2026; 1 month \\
+Employment and hires by age $\times$ sector & Census QWI, national file & Q & 1994Q1--2025Q3; $\sim$12 months \\
+Unemployment by age (20--24, 25--54) & BLS CPS, via FRED & M & 1948--Oct 2026; 1 month \\
+AI exposure by industry & \citet{felten2023language}, language-model AIIE & static & NAICS 4--6 digit \\
+IT capital by industry, 1995 & BEA detailed fixed assets & A & 1925--2025 \\
+Industry returns, factors & Ken French data library & D & through Sep 2026 \\
+2-year Treasury yield & FRED (DGS2) & D & through Nov 2026 \\
+\bottomrule
+\end{tabular}
+\end{singlespace}
+\end{table}
+
+\paragraph{Units of analysis.} Output per hour (C1) and the labor share (C3) are measured for 13 private sectors where BEA's industry definitions match a CES supersector. Employment by age (C2) uses the 19 two-digit NAICS sectors in QWI. Total employment is measured for 91 detailed CES industries matched to the exposure index at the 3- or 4-digit NAICS level. Returns (C4) use 16 sectors formed by mapping the 49 Fama--French industries to NAICS sectors.
+
+\paragraph{Key transformations.}
+\begin{itemize}
+  \item \emph{Hours.} CES publishes all-employee hours only from 2006, so for earlier years we scale the production-and-nonsupervisory hours index by the ratio of all to nonsupervisory employment, and splice it to the official series in 2006. The proxy tracks the official series within $\pm5\%$ over 2006--2026. Using nonsupervisory hours alone would overstate productivity in exactly the industries where AI removes nonsupervisory jobs.
+  \item \emph{Junior gap.} $g_{s,t} = \ln E_{s,t}^{22\text{--}24} - \ln E_{s,t}^{35\text{--}54}$ from QWI; the analogous hiring gap uses QWI hires.
+  \item \emph{Exposure.} AI exposure is the mean language-model exposure score across detailed industries in a sector; IT exposure is the IT (computers, communications, software) share of the sector's net capital stock in 1995. Both are standardized across sectors, so coefficients are per standard deviation.
+\end{itemize}
+
+\paragraph{Event windows and timing.} The AI era starts with ChatGPT's release (November 30, 2022). COVID quarters (2020--2021) are excluded from every estimate, because the hours and employment of exposed sectors collapsed and rebounded for unrelated reasons. For trading, a QWI quarter is treated as known only 12 months after it ends, matching the observed publication lag; BEA and CES data are used with their release lags.
+
+\paragraph{Announced value versus market expectation.} These releases have no consensus forecasts, which is one reason we expect slow price responses. We form a ``prior'' for the slowest release instead: a nowcast of the QWI junior gap from monthly CES employment, the CES supervisory share and the CPS young-minus-prime unemployment gap, fitted on 2001--2019 only. Out of sample (2023--2025) it explains 53\% of the variation in the realized junior gap (correlation 0.77; Figure~\ref{fig:nowcast} in Appendix~\ref{app:nowcast}).
+
+\paragraph{Limitations.} FRED and the bulk files serve the latest data vintage; revisions are not modeled except through the conservative QWI lag. National QWI aggregates include imputed values for early years. Exposure is averaged without employment weights. The Fama--French to NAICS mapping is approximate (for example, ``Business Services'' covers both NAICS 54 and 56).
+
+\subsection{Empirical design}
+\label{sec:design}
+
+For each claim and era $e \in \{\text{IT}, \text{AI}\}$ we estimate
+\begin{equation}
+  y_{s,t} = \mu_s + \lambda_t + \beta_e \left(\text{Era}_t \times \text{Exposure}_s\right) + \gamma' x_{s,t} + \varepsilon_{s,t},
+  \label{eq:did}
+\end{equation}
+where $\mu_s$ and $\lambda_t$ are sector and period fixed effects. The period effects absorb everything common to all sectors (the business cycle, monetary policy, the 2022--23 hikes), so $\beta_e$ is identified only from differences across sectors with different exposure. For C1 and C3 the IT era is 1998--2004 and the AI era 2023--2025, each compared with a common 2010--2019 baseline. For C2 the IT window is 1996--2000 against 1994--1995 and the AI window is 2022Q4--2025Q3 against 2015--2019; $x_{s,t}$ optionally includes log sector employment, so that the junior gap is measured \emph{given} sector size.
+
+With 13 to 19 sectors, conventional clustered standard errors over-reject. We therefore report $p$-values from the restricted wild cluster bootstrap with Webb weights \citep{cameron2008bootstrap, webb2023reworking}, 1,999 replications. To check timing, we estimate year-by-year versions of~\eqref{eq:did} (event studies) and a ``kink'' specification that adds, interacted with exposure, a pre-existing trend, a post-COVID level shift, and a post-ChatGPT change in slope.

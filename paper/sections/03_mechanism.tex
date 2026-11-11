@@ -1,0 +1,33 @@
+\section{Economic Mechanism and Asset-Pricing Channel}
+\label{sec:mechanism}
+
+\paragraph{What we claim to forecast better than the market.} The market treats ``AI exposure'' as a single characteristic: high-exposure industries are expected to benefit. Model~\eqref{eq:tasks} says the same exposure can mean opposite things for shareholders. If AI replaces the routine (often junior) tasks in an industry, measured hours fall relative to output, unit labor costs fall, and the gain shows up in gross operating surplus. If AI complements the workers who remain, output rises but so do wages, and margins need not move. The labor-market data distinguish these cases months or years before they show up in earnings; equity prices may not.
+
+\paragraph{Chain from macro information to prices.} The mechanism runs as follows.
+\begin{enumerate}
+  \item \emph{Firm reaction functions} (secondary channel): firms adopt AI for codified tasks and cut entry-level hiring before they cut existing staff, because attrition is cheaper than layoffs.
+  \item This appears first in the employment-by-age data (QWI) and in the supervisory share of employment (CES), and only later in output and compensation by industry (BEA).
+  \item \emph{Cash flows} (primary channel): lower unit labor costs raise margins in substituting industries; the labor share falls.
+  \item If investors underweight these releases, prices of substituting industries drift up relative to complementing industries as the cash flows are realized.
+\end{enumerate}
+\emph{Discount rates} enter as a confound rather than a channel. AI-exposed sectors (information, finance, professional services) are long-duration and rate-sensitive, so any return pattern must survive a control for exposure to the 2-year Treasury yield (Lecture~7).
+
+\paragraph{Four claims and what would refute them.} Every result in this paper maps to one of four claims, each with a stated falsifier.
+
+\begin{singlespace}
+\small
+\begin{center}
+\begin{tabular}{p{0.06\linewidth}p{0.42\linewidth}p{0.42\linewidth}}
+\toprule
+ & Claim & Inconsistent evidence \\
+\midrule
+C1 & Output per hour accelerated more where AI exposure is higher. & No exposure gradient, or one driven only by price-deflator artifacts in the information sector. \\
+C2 & Substitution shows up as missing junior workers, adjusting through hiring rather than separations. & The same junior decline in low-exposure sectors (a common shock), or one explained by sector size (demand). \\
+C3 & Substitution raises margins: the labor share falls where exposure is high. & Prices fall one-for-one with any productivity gain (gains go to consumers), or the result rests on one sector. \\
+C4 & The market does not separate substituting from complementing sectors, so a long-short on the substitution signal earns alpha. & No alpha after factor controls, or returns explained by interest-rate exposure. \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{singlespace}
+
+\paragraph{Why test twice.} With roughly three years of post-ChatGPT data, any AI-era estimate is noisy. The IT boom gives us a second, completed episode of a general-purpose technology hitting white-collar work. We estimate every claim on both episodes with identical code, using 1995 IT capital intensity as the IT-era analogue of AI exposure, and then ask how far the AI-era evidence should be pulled towards the IT-era estimate (Section~\ref{sec:bayes}). The two exposure measures are correlated (0.63 across sectors), so the same white-collar sectors are ``exposed'' in both eras; differences in outcomes are therefore informative about the technology rather than about which sectors we happen to be looking at.

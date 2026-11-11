@@ -1,0 +1,61 @@
+% 46-975 Final Project: prospectus proposal.
+% Format required by the course: 12 pt, double spaced, 1-inch margins, at least 12 pages.
+% Figures and tables are produced by the aiprod pipeline (see README); do not edit them by hand.
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[authoryear,round]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+
+\graphicspath{{figures/}}
+\captionsetup{font={small,singlespacing}, labelfont=bf, margin=0pt}
+\setlength{\parskip}{0pt}
+
+% Tables are single spaced and small so they fit the text width.
+\newcommand{\inserttable}[1]{\begin{singlespace}\footnotesize\centering\setlength{\tabcolsep}{4pt}\input{tables/#1}\end{singlespace}}
+
+\title{\textbf{Who Gets Paid for AI?}\\[4pt]
+\large Entry-Level Substitution, the Labor Share, and What the Macro Releases Say\\[2pt]
+\normalsize A prospectus proposal for an industry-rotation strategy}
+\author{Samay Panwar \and [Group member] \and [Group member]\\[2pt]
+\small 46-975 Macroeconomics for MSCF, Carnegie Mellon University}
+\date{December 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{singlespace}
+\begin{abstract}
+\noindent Generative AI is a shock to the production function, and the question that matters for prices is who collects the gain. Where AI substitutes for labor the gain should show up in margins; where it complements labor it should show up in wages. We read the answer from scheduled macro releases (BEA GDP by industry, the BLS employment report, and Census QWI employment by age), and we test every claim twice: once on the 1995--2004 IT boom, which serves as a historical prior, and once on the post-ChatGPT era. Three findings stand out. AI-exposed sectors show no measurable acceleration in output per hour; they do show a sharp relative decline in employment of 22--24 year-olds, with a further downward kink after ChatGPT; and their labor share has fallen by roughly 0.8 percentage points per year per standard deviation of exposure, a result that survives dropping any single sector. The IT boom shows none of this. The pattern is substitution at the entry margin with gains accruing to capital. A sector-rotation strategy built on the junior-hiring signal, however, does not earn excess returns after factor and interest-rate controls. We present this as a defended negative result and outline the conditions under which the trade would become viable.
+\end{abstract}
+\end{singlespace}
+
+\doublespacing
+\input{sections/01_executive_summary}
+\input{sections/02_motivation}
+\input{sections/03_mechanism}
+\input{sections/04_data}
+\input{sections/05_results}
+\input{sections/06_forward}
+\input{sections/07_strategy}
+\input{sections/08_conclusion}
+
+\begin{singlespace}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{singlespace}
+
+\appendix
+\input{sections/09_appendix}
+
+\end{document}
