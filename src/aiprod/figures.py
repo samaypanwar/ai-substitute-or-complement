@@ -15,6 +15,7 @@ is always orange.
 """
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 import pandas as pd
 
 from aiprod.config import FIGURES
@@ -111,4 +112,5 @@ def event_study_panel(ax: plt.Axes, study: pd.DataFrame, color: str, x: str = "y
     high = study["gamma"] + 1.96 * study["se"]
     ax.fill_between(study[x], low, high, color=color, alpha=0.18, linewidth=0)
     ax.plot(study[x], study["gamma"], color=color, marker="o")
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     zero_line(ax)

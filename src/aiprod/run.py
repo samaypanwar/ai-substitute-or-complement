@@ -45,10 +45,18 @@ def real_side(sector_exp: pd.DataFrame, naics_exp: pd.DataFrame) -> dict[str, pd
         claims.annual_era_did(annual, sector_exp, "growth", "C1")
         + claims.c2_junior_employment(gaps, naics_exp)
         + claims.annual_era_did(incidence, sector_exp, "labor_share_change", "C3")
+        + claims.annual_era_did(incidence, sector_exp, "labor_share", "C3")
         + claims.annual_era_did(incidence, sector_exp, "price_growth", "C3")
     )
     estimates = pd.DataFrame([asdict(e) for e in estimates])
     save_table(estimates, "did_estimates")
+
+    # Pre-trend check for C3: labor share level by year (AI exposure, base 2019).
+    c3_study = claims.event_study(
+        incidence[incidence["date"].dt.year.between(2010, 2025)], "labor_share", "sector",
+        sector_exp["ai_exposure"], 2019,
+    )
+    save_table(c3_study, "c3_event_study")
 
     # Pre-trend checks: junior gap by year, both eras.
     eras = {"AI": (2012, 2026, 2019, "ai_exposure"), "IT": (1994, 2004, 1995, "it_share")}
@@ -64,6 +72,8 @@ def real_side(sector_exp: pd.DataFrame, naics_exp: pd.DataFrame) -> dict[str, pd
         inference.kink_test(gaps_with_exposure, "emp_gap", "industry", "ai_exposure", ("log_emp_total",))
         .assign(panel="QWI sectors"),
         inference.kink_test(detailed, "log_emp", "naics", "ai_exposure").assign(panel="CES detailed industries"),
+        inference.kink_test(gaps_with_exposure, "emp_gap", "industry", "ai_exposure", ("log_emp_total",),
+                            drop_covid=False).assign(panel="QWI sectors, linear through COVID"),
     ])
     save_table(kinks, "kink_tests")
 
@@ -74,7 +84,7 @@ def real_side(sector_exp: pd.DataFrame, naics_exp: pd.DataFrame) -> dict[str, pd
     save_table(detailed_study, "detailed_event_study")
 
     return {"estimates": estimates, "studies": studies, "gaps": gaps, "incidence": incidence,
-            "detailed": detailed, "detailed_study": detailed_study, "kinks": kinks}
+            "detailed": detailed, "detailed_study": detailed_study, "kinks": kinks, "c3_study": c3_study}
 
 
 def pricing(gaps: pd.DataFrame, naics_exp: pd.DataFrame) -> dict[str, pd.DataFrame]:
@@ -135,6 +145,7 @@ def main() -> None:
     plots.strategy_paths(priced["strategies"], priced["size"])
     plots.bayesian_pooling(posteriors, POOLED_LABELS)
     plots.exposure_overlap(sector_exp)
+    plots.c3_event_study(real["c3_study"])
 
     tables.did_table(real["estimates"])
     tables.kink_table(real["kinks"])

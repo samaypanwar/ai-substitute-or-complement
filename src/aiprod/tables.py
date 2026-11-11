@@ -15,13 +15,16 @@ DID_ROWS = [
     ("C2", "hire_gap", "Junior hiring gap"),
     ("C2", "hire_gap|log_emp_total", "\\quad given sector size"),
     ("C3", "labor_share_change", "Labor share change (pp/yr)"),
+    ("C3", "labor_share", "Labor share level (pp)"),
     ("C3", "price_growth", "Value-added price growth (pp/yr)"),
 ]
 KINK_TERMS = {
     "exposure:trend": "Pre-existing trend (per year)",
+    "exposure:ramp_2020": "Slope from 2020 (per year)",
     "exposure:post_covid": "Post-COVID level shift",
     "exposure:ramp_chatgpt": "Change in slope after ChatGPT (per year)",
 }
+KINK_PANELS = ["QWI sectors", "QWI sectors, linear through COVID", "CES detailed industries"]
 
 
 SHORT_NAMES = {
@@ -67,21 +70,25 @@ def did_table(estimates: pd.DataFrame) -> None:
 
 
 def kink_table(kinks: pd.DataFrame) -> None:
-    """ChatGPT kink test for the QWI junior gap and for detailed-industry employment."""
-    panels = ["QWI sectors", "CES detailed industries"]
+    """ChatGPT kink test: main and alternative specifications, plus total employment."""
     lines = [
-        "\\begin{tabular}{lrrrr}",
+        "\\begin{tabular}{lrrrrrr}",
         "\\toprule",
-        " & \\multicolumn{2}{c}{Junior gap (19 sectors)} & \\multicolumn{2}{c}{Employment (91 industries)} \\\\",
-        "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5}",
-        "Term $\\times$ exposure & $\\hat\\beta$ & $p_{\\text{boot}}$ & $\\hat\\beta$ & $p_{\\text{boot}}$ \\\\",
+        " & \\multicolumn{2}{c}{Junior gap, COVID dropped} & \\multicolumn{2}{c}{Junior gap, linear} "
+        "& \\multicolumn{2}{c}{Employment, 91 ind.} \\\\",
+        "\\cmidrule(lr){2-3} \\cmidrule(lr){4-5} \\cmidrule(lr){6-7}",
+        "Term $\\times$ exposure & $\\hat\\beta$ & $p_{\\text{boot}}$ & $\\hat\\beta$ & $p_{\\text{boot}}$ "
+        "& $\\hat\\beta$ & $p_{\\text{boot}}$ \\\\",
         "\\midrule",
     ]
     for term, label in KINK_TERMS.items():
         cells = []
-        for panel in panels:
-            row = kinks[(kinks["panel"] == panel) & (kinks["term"] == term)].iloc[0]
-            cells += [num(row["beta"], ".4f"), p_text(row["p_boot"])]
+        for panel in KINK_PANELS:
+            match = kinks[(kinks["panel"] == panel) & (kinks["term"] == term)]
+            if match.empty:
+                cells += ["--", ""]
+            else:
+                cells += [num(match.iloc[0]["beta"], ".4f"), p_text(match.iloc[0]["p_boot"])]
         lines.append(f"{label} & " + " & ".join(cells) + " \\\\")
     lines += ["\\bottomrule", "\\end{tabular}"]
     write("tab_kink", lines)

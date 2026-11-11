@@ -151,7 +151,8 @@ def bayesian_sizing(ls: pd.Series, prior_sd: float = 0.005, half_life_months: fl
     monthly returns, exponentially down-weighted with ``half_life_months`` so
     that a regime change (AI is not IT) can overturn old evidence. The size is
     the posterior z-score of mu, clipped to [-1, 1], using only returns
-    observed before the month being traded.
+    observed before the month being traded. The position is zero until 12
+    months of returns have been observed (no variance estimate before that).
 
     Args:
         ls (pd.Series): Monthly long-short returns.
@@ -165,11 +166,14 @@ def bayesian_sizing(ls: pd.Series, prior_sd: float = 0.005, half_life_months: fl
     sizes = {}
     weighted_n, weighted_sum, weighted_sq = 0.0, 0.0, 0.0
 
-    for date, value in ls.items():
-        variance = max(weighted_sq / weighted_n - (weighted_sum / weighted_n) ** 2, 1e-6) if weighted_n > 12 else ls.var()
-        posterior_var = 1 / (1 / prior_sd ** 2 + weighted_n / variance)
-        posterior_mean = posterior_var * weighted_sum / variance
-        sizes[date] = float(np.clip(posterior_mean / np.sqrt(posterior_var), -1, 1))
+    for months_seen, (date, value) in enumerate(ls.items()):
+        if months_seen < 12:
+            sizes[date] = 0.0
+        else:
+            variance = max(weighted_sq / weighted_n - (weighted_sum / weighted_n) ** 2, 1e-6)
+            posterior_var = 1 / (1 / prior_sd ** 2 + weighted_n / variance)
+            posterior_mean = posterior_var * weighted_sum / variance
+            sizes[date] = float(np.clip(posterior_mean / np.sqrt(posterior_var), -1, 1))
 
         weighted_n = decay * weighted_n + 1
         weighted_sum = decay * weighted_sum + value

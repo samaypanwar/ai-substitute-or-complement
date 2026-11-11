@@ -112,6 +112,17 @@ def detailed_event_study(study: pd.DataFrame) -> None:
     save(fig, "fig05_detailed_employment_event_study")
 
 
+def c3_event_study(study: pd.DataFrame) -> None:
+    """Event study of the labor share level on AI exposure (base 2019)."""
+    fig, ax = plt.subplots(figsize=(HALF, 2.4))
+    event_study_panel(ax, study, AI_BLUE)
+    mark_event(ax, 2022.9, "ChatGPT")
+
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Effect of +1 SD exposure (pp)")
+    save(fig, "fig10_labor_share_event_study")
+
+
 def exposure_overlap(exposures: pd.DataFrame) -> None:
     """Scatter of 1995 IT capital share against AI exposure across sectors."""
     # Four low-exposure sectors sit on top of each other near the origin: label them as one group.

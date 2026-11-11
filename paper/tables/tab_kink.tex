@@ -1,11 +1,12 @@
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrrr}
 \toprule
- & \multicolumn{2}{c}{Junior gap (19 sectors)} & \multicolumn{2}{c}{Employment (91 industries)} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5}
-Term $\times$ exposure & $\hat\beta$ & $p_{\text{boot}}$ & $\hat\beta$ & $p_{\text{boot}}$ \\
+ & \multicolumn{2}{c}{Junior gap, COVID dropped} & \multicolumn{2}{c}{Junior gap, linear} & \multicolumn{2}{c}{Employment, 91 ind.} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+Term $\times$ exposure & $\hat\beta$ & $p_{\text{boot}}$ & $\hat\beta$ & $p_{\text{boot}}$ & $\hat\beta$ & $p_{\text{boot}}$ \\
 \midrule
-Pre-existing trend (per year) & 0.0002 & 0.95 & 0.0004 & 0.90 \\
-Post-COVID level shift & $-$0.0560 & $<$0.01 & 0.0113 & 0.19 \\
-Change in slope after ChatGPT (per year) & $-$0.0124 & 0.01 & $-$0.0006 & 0.87 \\
+Pre-existing trend (per year) & 0.0002 & 0.95 & -- &  & 0.0004 & 0.90 \\
+Slope from 2020 (per year) & -- &  & $-$0.0215 & 0.01 & -- &  \\
+Post-COVID level shift & $-$0.0560 & $<$0.01 & -- &  & 0.0113 & 0.19 \\
+Change in slope after ChatGPT (per year) & $-$0.0124 & 0.01 & 0.0158 & 0.09 & $-$0.0006 & 0.87 \\
 \bottomrule
 \end{tabular}

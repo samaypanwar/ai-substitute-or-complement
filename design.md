@@ -93,7 +93,8 @@ Coefficients are per 1 SD of exposure. p-values come from a wild cluster bootstr
 |---|---|---|
 | C1 productivity growth, pp/yr | +0.49 (p = 0.26) | −0.26 (p = 0.96) |
 | C2 junior employment gap, given sector size | +0.028 (p = 0.35) | **−0.071 (p = 0.01)** |
-| C3 labor share change, pp/yr | +0.01 (p = 0.99) | **−0.81 (p < 0.01)**; −0.61 to −0.85 leaving out any one sector |
+| C3 labor share change, pp/yr | +0.01 (p = 0.99) | −0.81 (p < 0.01), but driven by unwinding of a 2021–22 spike |
+| C3 labor share **level**, pp | +1.73 (p = 0.29) | −0.47 (p = 0.83) |
 | C3 value-added price growth, pp/yr | −1.16 (p = 0.26) | +2.21 (p = 0.26) |
 
 **ChatGPT kink test** (COVID years dropped; exposed-sector junior gap):
@@ -119,7 +120,9 @@ Caveat: an earlier specification fitted a straight line through 2020–22 and fo
 - C2: the sign depends on $\tau$. P(negative) is 0.62 at $\tau=0$ and 0.95 once $\tau$ reaches the AI standard error.
 - C1: uninformative.
 
-**Overall reading.** AI-exposed sectors show substitution at the *entry margin*: fewer juniors, a falling labor share, no fewer jobs overall. There is no measurable productivity acceleration, so the gain shows up as margins rather than measured output (D4). We find no evidence that sector equity returns trade on it.
+**C3 event study (levels, base 2019).** Exposed sectors' labor share drifted down before 2019, jumped about 2 pp in 2021–22, and fell back to −0.6 pp by 2025, within noise. The change-based −0.81 is mostly that spike unwinding. **C3 is inconclusive.**
+
+**Overall reading.** AI-exposed sectors show substitution at the *entry margin*: fewer juniors, no fewer jobs overall. There is no measurable productivity acceleration, and no clear labor-share change yet. Markups and pricing power remain an alternative explanation. We find no evidence that sector equity returns trade on it.
 
 **Not built yet:**
 - unit labor cost as a separate series;

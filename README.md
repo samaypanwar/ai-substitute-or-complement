@@ -49,4 +49,4 @@ bash scripts/sync_paper.sh           # copy figures/tables into paper/ and write
 Upload `paper.zip` in Overleaf (New Project > Upload Project); the main file is `main.tex`. Figures and tables are generated, so edit the pipeline rather than the copies in `paper/`.
 
 ## Current results
-See [`design.md` §6](design.md). In short: AI-exposed sectors show fewer junior workers (with a post-ChatGPT kink) and a falling labor share, but no productivity acceleration and no change in total employment. A long-short strategy on the junior-substitution signal does not earn excess returns.
+See [`design.md` §6](design.md). In short: AI-exposed sectors show fewer junior workers (with a suggestive post-ChatGPT kink), but no productivity acceleration, no change in total employment, and no clear labor-share change once a 2021–22 spike is accounted for. A long-short strategy on the junior-substitution signal does not earn excess returns.

@@ -106,20 +106,23 @@ def years_since(dates: pd.Series, start: str) -> pd.Series:
 
 
 def kink_test(
-    frame: pd.DataFrame, outcome: str, unit: str, exposure: str, controls: tuple[str, ...] = ()
+    frame: pd.DataFrame, outcome: str, unit: str, exposure: str,
+    controls: tuple[str, ...] = (), drop_covid: bool = True,
 ) -> pd.DataFrame:
-    """Did the exposure gradient bend at ChatGPT, relative to its pre-2020 trend?
+    """Did the exposure gradient bend at ChatGPT?
 
-    COVID quarters (2020-2021) are dropped, as everywhere else in the project:
-    exposed sectors crashed and recovered in a V that a straight line would
-    misread. Three terms enter, each interacted with standardized exposure:
+    Main specification (``drop_covid=True``): COVID years (2020-2021) are
+    dropped, as everywhere else in the project, because exposed sectors crashed
+    and recovered in a V. Three terms enter, each interacted with standardized
+    exposure:
 
     * ``trend`` (years since 2015): the pre-existing slope;
     * ``post_covid`` (1 from 2022): a level shift for lasting COVID scarring;
     * ``ramp_chatgpt`` (years since 2022Q4): the *change* in slope after ChatGPT.
 
-    A gen-AI substitution story predicts a negative ``ramp_chatgpt``; a pure
-    COVID or remote-work story predicts a level shift but no new slope.
+    Alternative (``drop_covid=False``): COVID years kept, with a straight line
+    from 2020 (``ramp_2020``) plus ``ramp_chatgpt``. This was our first
+    specification; it averages the V into one slope. Both are reported.
 
     Args:
         frame (pd.DataFrame): Panel with ``unit``, ``date``, ``outcome``,
@@ -128,22 +131,29 @@ def kink_test(
         unit (str): Industry column (also the cluster).
         exposure (str): Raw exposure column; standardized across units here.
         controls (tuple[str, ...]): Extra regressors.
+        drop_covid (bool): Use the main specification (True) or the alternative.
 
     Returns:
         pd.DataFrame: Rows for each term with ``beta`` (per year, or level for
         ``post_covid``, per SD of exposure), ``t`` and ``p_boot``.
     """
-    in_sample = (frame["date"] >= "2015-01-01") & ~frame["date"].dt.year.isin([2020, 2021])
+    in_sample = frame["date"] >= "2015-01-01"
+    if drop_covid:
+        in_sample &= ~frame["date"].dt.year.isin([2020, 2021])
     data = frame[in_sample].copy()
 
     unit_exposure = data.groupby(unit)[exposure].first()
     data["exposure"] = data[unit].map(standardize(unit_exposure))
     data["trend"] = years_since(data["date"], "2015-01-01")
     data["post_covid"] = (data["date"] >= "2022-01-01").astype(int)
+    data["ramp_2020"] = years_since(data["date"], "2020-01-01")
     data["ramp_chatgpt"] = years_since(data["date"], "2022-10-01")
     data = data.dropna(subset=[outcome, "exposure", *controls])
 
-    terms = ("exposure:trend", "exposure:post_covid", "exposure:ramp_chatgpt")
+    if drop_covid:
+        terms = ("exposure:trend", "exposure:post_covid", "exposure:ramp_chatgpt")
+    else:
+        terms = ("exposure:ramp_2020", "exposure:ramp_chatgpt")
     rhs = " + ".join([f"C({unit})", "C(date)", *controls, *terms])
     rows = []
     for term in terms:
