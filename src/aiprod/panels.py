@@ -157,11 +157,30 @@ def incidence_panel() -> pd.DataFrame:
     return pd.concat(panels, ignore_index=True)
 
 
-def naics2_exposures() -> pd.DataFrame:
+def weighted_mean(values: pd.Series, weights: pd.Series | None) -> float:
+    """Mean of ``values``, weighted by ``weights`` where available (unweighted if None)."""
+    if weights is None:
+        return float(values.mean())
+    w = weights.reindex(values.index)
+    keep = w.notna() & (w > 0)
+    return float((values[keep] * w[keep]).sum() / w[keep].sum())
+
+
+def aiie_with_weights(weighted: bool) -> tuple[pd.Series, pd.Series | None]:
+    """LM AIIE by 6-digit code and, if ``weighted``, 2019 CBP employment on the same index."""
+    aiie = sources.language_model_exposure()
+    if not weighted:
+        return aiie, None
+    employment = sources.cbp_employment(2019)
+    return aiie, pd.Series(aiie.index.str[:4].map(employment), index=aiie.index)
+
+
+def naics2_exposures(weighted: bool = False) -> pd.DataFrame:
     """AI and IT exposure for each QWI two-digit NAICS sector.
 
-    AI exposure is the unweighted mean of the language-modeling AIIE across the
-    detailed industries in the sector. IT exposure is the IT share of the
+    AI exposure is the mean of the language-modeling AIIE across the detailed
+    industries in the sector: unweighted by default, or weighted by 2019 County
+    Business Patterns employment when ``weighted`` is True. IT exposure is the IT share of the
     sector's net capital stock in ``IT_BASE_YEAR``, aggregated by summing
     dollars across BEA fixed-asset industries.
 
@@ -169,8 +188,8 @@ def naics2_exposures() -> pd.DataFrame:
         pd.DataFrame: Columns ``ai_exposure`` and ``it_share``, indexed by QWI
         sector label.
     """
-    aiie = sources.language_model_exposure()
-    ai = aiie.groupby(aiie.index.map(to_naics2)).mean()
+    aiie, weights = aiie_with_weights(weighted)
+    ai = aiie.groupby(aiie.index.map(to_naics2)).apply(lambda g: weighted_mean(g, weights))
 
     stock = sources.it_capital_stock(IT_BASE_YEAR)
     stock = stock.groupby(stock.index.map(to_naics2)).sum()
@@ -178,7 +197,7 @@ def naics2_exposures() -> pd.DataFrame:
     return pd.DataFrame({"ai_exposure": ai, "it_share": it}).dropna()
 
 
-def sector_exposures() -> pd.DataFrame:
+def sector_exposures(weighted: bool = False) -> pd.DataFrame:
     """AI and IT exposure aggregated to the 13 productivity-panel sectors.
 
     AI exposure averages the member NAICS sectors; IT share sums capital
@@ -187,7 +206,7 @@ def sector_exposures() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Columns ``ai_exposure`` and ``it_share``, indexed by sector key.
     """
-    aiie = sources.language_model_exposure()
+    aiie, weights = aiie_with_weights(weighted)
     stock = sources.it_capital_stock(IT_BASE_YEAR)
     aiie_naics2 = aiie.index.map(to_naics2)
     stock_naics2 = stock.index.map(to_naics2)
@@ -196,7 +215,7 @@ def sector_exposures() -> pd.DataFrame:
     for sector in SECTORS:
         members = stock.loc[stock_naics2.isin(sector.naics2)]
         rows[sector.key] = {
-            "ai_exposure": aiie.loc[aiie_naics2.isin(sector.naics2)].mean(),
+            "ai_exposure": weighted_mean(aiie.loc[aiie_naics2.isin(sector.naics2)], weights),
             "it_share": members["it"].sum() / members["total"].sum(),
         }
     return pd.DataFrame.from_dict(rows, orient="index")

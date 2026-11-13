@@ -221,3 +221,25 @@ def qwi_by_age() -> pd.DataFrame:
         columns={"Emp": "emp", "HirA": "hires", "Sep": "separations", "EarnS": "earnings"}
     )
     return renamed[["industry", "agegrp", "date", "emp", "hires", "separations", "earnings"]]
+
+
+CBP_US = "https://www2.census.gov/programs-surveys/cbp/datasets/{year}/cbp{yy}us.zip"
+
+
+def cbp_employment(year: int = 2019) -> pd.Series:
+    """National employment by 4-digit NAICS industry from County Business Patterns.
+
+    Used as weights when averaging detailed-industry AI exposure up to sectors.
+    ``year`` defaults to 2019, the last pre-COVID, pre-ChatGPT year.
+
+    Args:
+        year (int): CBP reference year.
+
+    Returns:
+        pd.Series: Mid-March employment indexed by 4-digit NAICS code (e.g. "5415").
+    """
+    path = download(CBP_US.format(year=year, yy=str(year)[2:]), RAW / f"cbp{year}us.zip")
+    with zipfile.ZipFile(path) as archive:
+        frame = pd.read_csv(archive.open(archive.namelist()[0]), dtype={"naics": str})
+    frame = frame[(frame["lfo"] == "-") & frame["naics"].str.fullmatch(r"\d{4}//")]
+    return frame.set_index(frame["naics"].str[:4])["emp"].astype(float).rename("cbp_emp")
