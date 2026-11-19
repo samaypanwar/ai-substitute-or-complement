@@ -236,10 +236,11 @@ def cbp_employment(year: int = 2019) -> pd.Series:
         year (int): CBP reference year.
 
     Returns:
-        pd.Series: Mid-March employment indexed by 4-digit NAICS code (e.g. "5415").
+        pd.Series: Mid-March employment indexed by NAICS code: 4-digit industries
+        (e.g. "5415") and 3-digit subsectors (e.g. "523").
     """
     path = download(CBP_US.format(year=year, yy=str(year)[2:]), RAW / f"cbp{year}us.zip")
     with zipfile.ZipFile(path) as archive:
         frame = pd.read_csv(archive.open(archive.namelist()[0]), dtype={"naics": str})
-    frame = frame[(frame["lfo"] == "-") & frame["naics"].str.fullmatch(r"\d{4}//")]
-    return frame.set_index(frame["naics"].str[:4])["emp"].astype(float).rename("cbp_emp")
+    frame = frame[(frame["lfo"] == "-") & frame["naics"].str.fullmatch(r"\d{3}(?:\d//|///)")]
+    return frame.set_index(frame["naics"].str.rstrip("/"))["emp"].astype(float).rename("cbp_emp")

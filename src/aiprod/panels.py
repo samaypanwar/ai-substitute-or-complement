@@ -163,6 +163,8 @@ def weighted_mean(values: pd.Series, weights: pd.Series | None) -> float:
         return float(values.mean())
     w = weights.reindex(values.index)
     keep = w.notna() & (w > 0)
+    if not keep.any():
+        return float("nan")  # no employment data for any industry in the group
     return float((values[keep] * w[keep]).sum() / w[keep].sum())
 
 
@@ -172,7 +174,19 @@ def aiie_with_weights(weighted: bool) -> tuple[pd.Series, pd.Series | None]:
     if not weighted:
         return aiie, None
     employment = sources.cbp_employment(2019)
-    return aiie, pd.Series(aiie.index.str[:4].map(employment), index=aiie.index)
+    weights = pd.Series(aiie.index.str[:4].map(employment), index=aiie.index, dtype=float)
+
+    # Some AIIE codes are 3-digit subsectors ("523000") or BLS groupings ("3250A1")
+    # with no 4-digit match. They share the subsector's employment not already
+    # matched by its 4-digit industries. Government (999) and rail/postal, which
+    # County Business Patterns does not cover, stay unweighted and drop out.
+    subsector = aiie.index.str[:3]
+    for code, group in weights.groupby(subsector):
+        missing = group.index[group.isna()]
+        if len(missing) and code in employment.index:
+            leftover = max(employment[code] - group.sum(skipna=True), 0.0)
+            weights[missing] = leftover / len(missing)
+    return aiie, weights
 
 
 def naics2_exposures(weighted: bool = False) -> pd.DataFrame:

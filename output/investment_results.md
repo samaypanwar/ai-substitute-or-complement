@@ -24,7 +24,10 @@ The C4 pricing test is not rerun.
 5. **Option B:** real gross output per hour (BEA TGO103 ÷ CES hours) and the intermediate-input
    share of gross output (TII105 ÷ TGO105).
 6. **Exposure:** LM AIIE averaged within sectors using 2019 County Business Patterns employment
-   (4-digit NAICS) as weights, in place of the unweighted mean. The IT score is unchanged.
+   (4-digit NAICS) as weights, in place of the unweighted mean. AIIE codes with no 4-digit match
+   (3-digit subsectors such as telecom 517 and securities 523, and BLS groupings such as 3250A1)
+   share their subsector's remaining employment. Government, rail and postal have no CBP data and
+   drop out. The IT score is unchanged.
 
 ## How big is the AI spending?
 
@@ -38,26 +41,26 @@ The IT-era excess is similarly small (≤0.34% of VA).
 
 | Measure | IT boom | AI era |
 |---|---|---|
-| **C1** VA per hour, AI as input (current) | +0.49 (p=0.26) | −0.05 (p=0.98) [−0.26] |
-| C1 VA per hour, AI as investment (trend excess) | +0.49 (p=0.27) | −0.02 (p=0.99) |
-| C1 VA per hour, AI as investment (over 2019 share) | +0.49 | −0.05 (p=0.98) |
-| C1 VA per hour, all IT services capitalized | +0.41 (p=0.39) | −0.05 (p=0.98) |
-| **C1** gross output per hour | +0.10 (p=0.78) | +0.19 (p=0.69) [+0.35] |
-| C1 intermediate-input share change (pp/yr) | −0.12 (p=0.60) | −0.15 (p=0.62) |
-| **C2** junior gap, given sector size | +0.028 (p=0.35) | **−0.064 (p=0.03)** [−0.071, p=0.01] |
+| **C1** VA per hour, AI as input (current) | +0.49 (p=0.26) | −0.13 (p=0.95) [−0.26] |
+| C1 VA per hour, AI as investment (trend excess) | +0.49 (p=0.27) | −0.10 (p=0.96) |
+| C1 VA per hour, AI as investment (over 2019 share) | +0.49 | −0.13 (p=0.95) |
+| C1 VA per hour, all IT services capitalized | +0.41 (p=0.39) | −0.12 (p=0.95) |
+| **C1** gross output per hour | +0.10 (p=0.78) | +0.20 (p=0.69) [+0.35] |
+| C1 intermediate-input share change (pp/yr) | −0.12 (p=0.60) | −0.10 (p=0.73) |
+| **C2** junior gap, given sector size | +0.028 (p=0.35) | **−0.062 (p=0.03)** [−0.071, p=0.01] |
 | C2 junior gap, no size control | +0.032 (p=0.27) | −0.048 (p=0.15) |
-| C2 junior hires gap, given size | +0.016 (p=0.46) | −0.043 (p=0.15) |
-| **C3** gross labor share change, current (pp/yr) | +0.01 (p=0.99) | −0.77 (p<0.01) [−0.81] |
-| C3 gross labor share change, AI as investment | +0.01 | −0.78 (p<0.01) |
-| C3 net labor share change, current | +0.14 (p=0.84) | −1.01 (p<0.01) |
-| C3 net labor share change, AI inv., δ=33% / 50% / 100% | +0.14 | −1.02 / −1.01 / −1.01 (all p<0.01) |
-| C3 net labor share change, all IT services inv., δ=50% | +0.20 | −1.01 (p<0.01) |
-| C3 gross labor share **level** (pp) | +1.73 (p=0.29) | −0.68 (p=0.71) |
-| C3 net labor share **level**, AI inv., δ=50% | +3.04 (p=0.08) | +1.84 (p=0.69) |
+| C2 junior hires gap, given size | +0.016 (p=0.46) | −0.043 (p=0.16) |
+| **C3** gross labor share change, current (pp/yr) | +0.01 (p=0.99) | −0.79 (p<0.01) [−0.81] |
+| C3 gross labor share change, AI as investment | +0.01 | −0.80 (p<0.01) |
+| C3 net labor share change, current | +0.14 (p=0.84) | −1.04 (p<0.01) |
+| C3 net labor share change, AI inv., δ=33% / 50% / 100% | +0.14 | −1.04 / −1.04 / −1.04 (all p<0.01) |
+| C3 net labor share change, all IT services inv., δ=50% | +0.20 | −1.04 (p<0.01) |
+| C3 gross labor share **level** (pp) | +1.73 (p=0.29) | −0.80 (p=0.65) |
+| C3 net labor share **level**, AI inv., δ=50% | +3.04 (p=0.08) | +1.57 (p=0.74) |
 
 **Bayesian pooling** (IT prior → AI posterior), P(β<0) at τ = 0 / mid-grid / 3×SE:
-C1 (AI as investment) 0.18 / 0.41 / 0.49; C1 (gross output/hr) 0.32 / 0.34 / 0.34;
-C2 0.55 / 0.93 / 0.99; C3 (net, δ=50%) 1.00 at every τ.
+C1 (AI as investment) 0.19 / 0.42 / 0.51; C1 (gross output/hr) 0.31 / 0.32 / 0.33;
+C2 0.59 / 0.93 / 0.99; C3 (net, δ=50%) 1.00 at every τ.
 
 ## Reading
 
@@ -68,9 +71,9 @@ C2 0.55 / 0.93 / 0.99; C3 (net, δ=50%) 1.00 at every τ.
 - **Gross output per hour** is positive in the AI era (+0.19) but far from significant, and the
   input share did not rise. There is no sign that exposed sectors swapped workers for purchased
   services at a scale visible in the national accounts.
-- **C2 survives** the exposure change: −0.064 (p=0.03), a little smaller than v1.
-- **C3:** the net labor share *change* is more negative than the gross one (−1.01 vs −0.77), but the
-  *levels* are insignificant under every treatment. As in v1, the change result is mostly the
+- **C2 survives** the exposure change: −0.062 (p=0.03), a little smaller than v1.
+- **C3:** the net labor share *change* is more negative than the gross one, but the
+  *levels* are insignificant under every treatment (−1.04 vs −0.79 for the changes). As in v1, the change result is mostly the
   2021–22 spike unwinding, so C3 remains inconclusive.
 
 ## Caveats

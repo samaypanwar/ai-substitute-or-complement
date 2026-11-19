@@ -50,52 +50,52 @@ C2,AI,emp_gap|log_emp_total,-0.07078393702576591,0.02375968336874228,0.012506253
 C2,AI,hire_gap,-0.03276095133366304,0.027265114625959277,0.24912456228114058,608,19,C2 | hire_gap,unweighted LM AIIE (v1)
 C2,AI,hire_gap|log_emp_total,-0.046024518200304954,0.025332002481799502,0.12556278139069535,608,19,C2 | hire_gap|log_emp_total,unweighted LM AIIE (v1)
 C1,IT,growth,0.49370821370291473,0.4994237219776914,0.26263131565782893,221,13,"C1 | VA per hour, AI as input (current)",employment-weighted LM AIIE
-C1,AI,growth,-0.04731932794757687,1.295489398471654,0.983991995997999,169,13,"C1 | VA per hour, AI as input (current)",employment-weighted LM AIIE
+C1,AI,growth,-0.12907596068201488,1.2613783840216886,0.9529764882441221,169,13,"C1 | VA per hour, AI as input (current)",employment-weighted LM AIIE
 C1,IT,growth_inv,0.4943633746702081,0.5022889014866745,0.2656328164082041,221,13,"C1 | VA per hour, AI as investment",employment-weighted LM AIIE
-C1,AI,growth_inv,-0.01762924078734107,1.2753953674563707,0.992496248124062,169,13,"C1 | VA per hour, AI as investment",employment-weighted LM AIIE
+C1,AI,growth_inv,-0.0997150124608529,1.2416250484787623,0.9599799899949975,169,13,"C1 | VA per hour, AI as investment",employment-weighted LM AIIE
 C1,IT,growth_inv_flat,0.4943633746702081,0.5022889014866745,0.2656328164082041,221,13,"C1 | VA per hour, AI as investment (excess over 2019 share)",employment-weighted LM AIIE
-C1,AI,growth_inv_flat,-0.05336022463589207,1.2649570663224763,0.9809904952476238,169,13,"C1 | VA per hour, AI as investment (excess over 2019 share)",employment-weighted LM AIIE
+C1,AI,growth_inv_flat,-0.13068077216427315,1.2313216283928239,0.9524762381190596,169,13,"C1 | VA per hour, AI as investment (excess over 2019 share)",employment-weighted LM AIIE
 C1,IT,growth_inv_all,0.4143347146399927,0.5185362185053684,0.3871935967983992,221,13,"C1 | VA per hour, ALL IT services as investment (upper bound)",employment-weighted LM AIIE
-C1,AI,growth_inv_all,-0.05349468300121418,1.2183573210080465,0.9809904952476238,169,13,"C1 | VA per hour, ALL IT services as investment (upper bound)",employment-weighted LM AIIE
+C1,AI,growth_inv_all,-0.12043837797473289,1.1895388512510996,0.9529764882441221,169,13,"C1 | VA per hour, ALL IT services as investment (upper bound)",employment-weighted LM AIIE
 C1,IT,go_growth,0.10248649292727663,0.3625466101496827,0.7803901950975488,221,13,C1 | Gross output per hour,employment-weighted LM AIIE
-C1,AI,go_growth,0.19233089878551513,0.4748757420575241,0.6863431715857929,169,13,C1 | Gross output per hour,employment-weighted LM AIIE
+C1,AI,go_growth,0.20232098019763323,0.44689596451293195,0.6903451725862931,169,13,C1 | Gross output per hour,employment-weighted LM AIIE
 C1,IT,input_share_change,-0.12252282996797717,0.23266296403554093,0.599799899949975,221,13,"C1 | Intermediate-input share of gross output, change (pp/yr)",employment-weighted LM AIIE
-C1,AI,input_share_change,-0.147473969256613,0.30213470260750047,0.6178089044522261,169,13,"C1 | Intermediate-input share of gross output, change (pp/yr)",employment-weighted LM AIIE
+C1,AI,input_share_change,-0.09876621159979398,0.29279697596780496,0.7323661830915458,169,13,"C1 | Intermediate-input share of gross output, change (pp/yr)",employment-weighted LM AIIE
 C3,IT,labor_share_change,0.00613138248201428,0.28040424272837317,0.9869934967483742,221,13,"C3 | Gross labor share change, current (pp/yr)",employment-weighted LM AIIE
-C3,AI,labor_share_change,-0.7732062283552809,0.14604233246440715,0.0050025012506253125,169,13,"C3 | Gross labor share change, current (pp/yr)",employment-weighted LM AIIE
+C3,AI,labor_share_change,-0.7933677708912454,0.11663563239702765,0.002001000500250125,169,13,"C3 | Gross labor share change, current (pp/yr)",employment-weighted LM AIIE
 C3,IT,labor_share_gross_inv_change,0.005289206897382229,0.2783165383568989,0.9894947473736868,221,13,"C3 | Gross labor share change, AI as investment",employment-weighted LM AIIE
-C3,AI,labor_share_gross_inv_change,-0.776456347316125,0.144310493649534,0.003501750875437719,169,13,"C3 | Gross labor share change, AI as investment",employment-weighted LM AIIE
+C3,AI,labor_share_gross_inv_change,-0.7969189011902368,0.11437158640838158,0.002001000500250125,169,13,"C3 | Gross labor share change, AI as investment",employment-weighted LM AIIE
 C3,IT,labor_share_gross_inv_all_change,0.029808054694891437,0.2673246316176076,0.9289644822411206,221,13,"C3 | Gross labor share change, ALL IT services as investment",employment-weighted LM AIIE
-C3,AI,labor_share_gross_inv_all_change,-0.7222901800379524,0.1549218421390825,0.005502751375687844,169,13,"C3 | Gross labor share change, ALL IT services as investment",employment-weighted LM AIIE
+C3,AI,labor_share_gross_inv_all_change,-0.7475111070896396,0.12351700614457728,0.0025012506253126563,169,13,"C3 | Gross labor share change, ALL IT services as investment",employment-weighted LM AIIE
 C3,IT,labor_share_net_change,0.1420643166325674,0.5476866101744633,0.8444222111055528,221,13,"C3 | Net labor share change, current",employment-weighted LM AIIE
-C3,AI,labor_share_net_change,-1.0120274842187782,0.1969607839961606,0.005502751375687844,169,13,"C3 | Net labor share change, current",employment-weighted LM AIIE
+C3,AI,labor_share_net_change,-1.038397912277473,0.15970365186227947,0.003501750875437719,169,13,"C3 | Net labor share change, current",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_flat_d50_change,0.14164513740432827,0.5468536406516747,0.8454227113556778,221,13,"C3 | Net labor share change, AI inv. over 2019 share, delta=50%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_flat_d50_change,-1.002180506554617,0.20369384017700298,0.005502751375687844,169,13,"C3 | Net labor share change, AI inv. over 2019 share, delta=50%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_flat_d50_change,-1.0312498694015169,0.16421899225752154,0.0030015007503751876,169,13,"C3 | Net labor share change, AI inv. over 2019 share, delta=50%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_all_d50_change,0.20354173192168123,0.5206992510943967,0.7998999499749875,221,13,"C3 | Net labor share change, ALL IT services inv., delta=50%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_all_d50_change,-1.007573004092849,0.21213565420129343,0.005502751375687844,169,13,"C3 | Net labor share change, ALL IT services inv., delta=50%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_all_d50_change,-1.0375583951907315,0.1711461904629867,0.0030015007503751876,169,13,"C3 | Net labor share change, ALL IT services inv., delta=50%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d33_change,0.14222530564977848,0.5462544619775135,0.8439219609804902,221,13,"C3 | Net labor share change, AI as investment, delta=33%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d33_change,-1.0148932484999438,0.19691203455067993,0.005502751375687844,169,13,"C3 | Net labor share change, AI as investment, delta=33%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d33_change,-1.0413376822551172,0.15953373575179117,0.003501750875437719,169,13,"C3 | Net labor share change, AI as investment, delta=33%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d50_change,0.14164513740432827,0.5468536406516747,0.8454227113556778,221,13,"C3 | Net labor share change, AI as investment, delta=50%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d50_change,-1.01380135375088,0.1973167518561125,0.005502751375687844,169,13,"C3 | Net labor share change, AI as investment, delta=50%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d50_change,-1.0402386362629805,0.16002016728408486,0.003501750875437719,169,13,"C3 | Net labor share change, AI as investment, delta=50%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d100_change,0.14206431663256733,0.5476866101744632,0.8444222111055528,221,13,"C3 | Net labor share change, AI as investment, delta=100%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d100_change,-1.0120274842187782,0.19696078399616068,0.005502751375687844,169,13,"C3 | Net labor share change, AI as investment, delta=100%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d100_change,-1.038397912277473,0.15970365186227958,0.003501750875437719,169,13,"C3 | Net labor share change, AI as investment, delta=100%",employment-weighted LM AIIE
 C3,IT,labor_share,1.7265172605022479,0.9025233321232652,0.2861430715357679,221,13,"C3 | Gross labor share level, current (pp)",employment-weighted LM AIIE
-C3,AI,labor_share,-0.6791036323790782,1.236995626263618,0.7068534267133567,169,13,"C3 | Gross labor share level, current (pp)",employment-weighted LM AIIE
+C3,AI,labor_share,-0.7999836103196936,1.2080510161940377,0.6503251625812907,169,13,"C3 | Gross labor share level, current (pp)",employment-weighted LM AIIE
 C3,IT,labor_share_net,3.039079489519997,0.9593403107507251,0.07703851925962982,221,13,"C3 | Net labor share level, current",employment-weighted LM AIIE
-C3,AI,labor_share_net,1.8438097461612473,3.3432629327500756,0.6868434217108554,169,13,"C3 | Net labor share level, current",employment-weighted LM AIIE
+C3,AI,labor_share_net,1.5710128594976671,3.3152104197730052,0.7403701850925463,169,13,"C3 | Net labor share level, current",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_all_d50,3.032909126909993,0.9602700109196551,0.0750375187593797,221,13,"C3 | Net labor share level, ALL IT services inv., delta=50%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_all_d50,1.884878909993458,3.3563919905401747,0.6863431715857929,169,13,"C3 | Net labor share level, ALL IT services inv., delta=50%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_all_d50,1.611006722984729,3.329817305470226,0.7403701850925463,169,13,"C3 | Net labor share level, ALL IT services inv., delta=50%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d33,3.034471824906764,0.9583979341973086,0.07703851925962982,221,13,"C3 | Net labor share level, AI as investment, delta=33%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d33,1.841984689269863,3.347556936856013,0.689344672336168,169,13,"C3 | Net labor share level, AI as investment, delta=33%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d33,1.5684344154123224,3.3188461504491786,0.7418709354677339,169,13,"C3 | Net labor share level, AI as investment, delta=33%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d50,3.0378693620526827,0.9593661913782439,0.07753876938469234,221,13,"C3 | Net labor share level, AI as investment, delta=50%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d50,1.8405443906091379,3.344297740989382,0.6888444222111055,169,13,"C3 | Net labor share level, AI as investment, delta=50%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d50,1.5673885967768162,3.3158231581463666,0.7418709354677339,169,13,"C3 | Net labor share level, AI as investment, delta=50%",employment-weighted LM AIIE
 C3,IT,labor_share_net_inv_d100,3.039079489519997,0.9593403107507251,0.07703851925962982,221,13,"C3 | Net labor share level, AI as investment, delta=100%",employment-weighted LM AIIE
-C3,AI,labor_share_net_inv_d100,1.8438097461612473,3.3432629327500756,0.6868434217108554,169,13,"C3 | Net labor share level, AI as investment, delta=100%",employment-weighted LM AIIE
+C3,AI,labor_share_net_inv_d100,1.5710128594976671,3.3152104197730052,0.7403701850925463,169,13,"C3 | Net labor share level, AI as investment, delta=100%",employment-weighted LM AIIE
 C2,IT,emp_gap,0.03172059757177927,0.015846102821239643,0.2741370685342671,532,19,C2 | emp_gap,employment-weighted LM AIIE
 C2,IT,emp_gap|log_emp_total,0.028245096453412444,0.016624197318938428,0.34667333666833416,532,19,C2 | emp_gap|log_emp_total,employment-weighted LM AIIE
 C2,IT,hire_gap,0.019484857186045354,0.015844059486469525,0.4117058529264632,532,19,C2 | hire_gap,employment-weighted LM AIIE
 C2,IT,hire_gap|log_emp_total,0.01640166977998092,0.014920803871041772,0.4627313656828414,532,19,C2 | hire_gap|log_emp_total,employment-weighted LM AIIE
-C2,AI,emp_gap,-0.047936857383749865,0.03169134619255506,0.14607303651825912,608,19,C2 | emp_gap,employment-weighted LM AIIE
-C2,AI,emp_gap|log_emp_total,-0.06370599212946004,0.0239818990965043,0.030015007503751877,608,19,C2 | emp_gap|log_emp_total,employment-weighted LM AIIE
-C2,AI,hire_gap,-0.033193910987345907,0.02874321369601225,0.27163581790895447,608,19,C2 | hire_gap,employment-weighted LM AIIE
-C2,AI,hire_gap|log_emp_total,-0.04270234301486653,0.02518540458893496,0.15107553776888444,608,19,C2 | hire_gap|log_emp_total,employment-weighted LM AIIE
+C2,AI,emp_gap,-0.04757471312156342,0.0318517094203413,0.1520760380190095,608,19,C2 | emp_gap,employment-weighted LM AIIE
+C2,AI,emp_gap|log_emp_total,-0.062468718893347486,0.022869739692022557,0.027013506753376687,608,19,C2 | emp_gap|log_emp_total,employment-weighted LM AIIE
+C2,AI,hire_gap,-0.033897041861372657,0.02979729936153327,0.2926463231615808,608,19,C2 | hire_gap,employment-weighted LM AIIE
+C2,AI,hire_gap|log_emp_total,-0.04289561465345493,0.025373909748330366,0.16408204102051024,608,19,C2 | hire_gap|log_emp_total,employment-weighted LM AIIE
